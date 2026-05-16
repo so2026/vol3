@@ -1,0 +1,26 @@
+services:
+  windows:
+    image: dockurr/windows
+    container_name: windows
+    environment:
+      VERSION: "7u"          # 指定 Windows 7 Ultimate
+      BOOT_MODE: "uefi"   # 👈 加上这一行来强制启用 UEFI 引导
+      # 性能调优参数
+      RAM_SIZE: "4G"      # 分配给虚拟机的内存（须小于机型总内存）
+      CPU_CORES: "2"      # 分配的 CPU 核心数
+      DISK_SIZE: "28G"    # 虚拟硬盘初始容量（后续可在磁盘管理中扩展）
+      USERNAME: "yang"
+      PASSWORD: "REDACTED_PASSWORD"
+      
+    devices:
+      - /dev/kvm
+      - /dev/net/tun
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - 8006:8006
+    volumes:
+      - ./windows-data:/storage   # 核心数据持久化
+      - /workspaces/241331302:/shared          # 宿主机与虚拟机的共享文件夹
+    restart: always
+    stop_grace_period: 2m
