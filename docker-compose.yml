@@ -4,13 +4,12 @@ services:
     container_name: windows
     environment:
       VERSION: "7u"          # 指定 Windows 7 Ultimate
-      BOOT_MODE: "uefi"   # 👈 加上这一行来强制启用 UEFI 引导
       # 性能调优参数
       RAM_SIZE: "4G"      # 分配给虚拟机的内存（须小于机型总内存）
       CPU_CORES: "2"      # 分配的 CPU 核心数
       DISK_SIZE: "28G"    # 虚拟硬盘初始容量（后续可在磁盘管理中扩展）
       USERNAME: "yang"
-      PASSWORD: "REDACTED_PASSWORD"
+      PASSWORD: "${WINDOWS_PASSWORD}"  # 从环境变量或 .env 文件获取
       
     devices:
       - /dev/kvm
